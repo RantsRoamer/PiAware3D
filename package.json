@@ -1,0 +1,23 @@
+{
+  "name": "overli",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "3D real-time ADS-B aircraft tracker using PiAware and Cesium.js",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"node server.js\"",
+    "build": "vite build",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "cesium": "^1.113.0",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "vitest": "^1.2.0"
+  }
+}
