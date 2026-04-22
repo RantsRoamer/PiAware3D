@@ -30,11 +30,11 @@ git clone https://github.com/RantsRoamer/PiAware3D.git piaware-3d && cd piaware-
 # 2. Install dependencies
 npm install
 
-# 3. Start development server (globe + API proxy)
+# 3. Start both dev servers (Vite on :5173, Express API proxy on :9898)
 npm run dev
 ```
 
-Open http://localhost:5173
+Open **http://localhost:5173** in your browser — Vite proxies API calls to the Express backend automatically.
 
 ### Production Build
 
