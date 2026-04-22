@@ -1,5 +1,5 @@
 // src/settings.js
-const STORAGE_KEY = 'overli_settings';
+const STORAGE_KEY = 'piaware3d_settings';
 
 export const DEFAULT_SETTINGS = {
   piawareUrl: 'http://piaware.local:8080',

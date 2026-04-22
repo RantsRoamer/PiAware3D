@@ -24,7 +24,7 @@ describe('loadSettings', () => {
 
   it('returns saved values from localStorage', () => {
     localStorageMock.setItem(
-      'overli_settings',
+      'piaware3d_settings',
       JSON.stringify({ piawareUrl: 'http://192.168.1.50:8080', cesiumToken: 'abc' })
     );
     const s = loadSettings();
@@ -33,7 +33,7 @@ describe('loadSettings', () => {
   });
 
   it('falls back to defaults on corrupted JSON', () => {
-    localStorageMock.setItem('overli_settings', 'NOT_JSON');
+    localStorageMock.setItem('piaware3d_settings', 'NOT_JSON');
     const s = loadSettings();
     expect(s.piawareUrl).toBe(DEFAULT_SETTINGS.piawareUrl);
   });
@@ -42,7 +42,7 @@ describe('loadSettings', () => {
 describe('saveSettings', () => {
   it('persists settings to localStorage', () => {
     saveSettings({ piawareUrl: 'http://10.0.0.1:8080', cesiumToken: 'xyz' });
-    const raw = JSON.parse(localStorageMock.getItem('overli_settings'));
+    const raw = JSON.parse(localStorageMock.getItem('piaware3d_settings'));
     expect(raw.piawareUrl).toBe('http://10.0.0.1:8080');
     expect(raw.cesiumToken).toBe('xyz');
   });

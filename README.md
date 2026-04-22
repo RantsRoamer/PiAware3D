@@ -1,4 +1,4 @@
-# overLI — PiAware 3D Live Map
+# PiAware-3D — Live Map
 
 Real-time 3D aircraft tracking on a Cesium.js globe, powered by your own PiAware / dump1090-fa device.
 
@@ -17,13 +17,13 @@ Open **http://localhost:5173** in your browser. Click **⚙ Settings** and enter
 
 ---
 
-## Installation
+## Installation (Node.js)
 
 **Requirements:** Node.js 18 or later. [Download Node.js](https://nodejs.org)
 
 ```bash
 # 1. Clone or download this project
-git clone <repo-url> overLI && cd overLI
+git clone <repo-url> piaware-3d && cd piaware-3d
 
 # 2. Install dependencies
 npm install
@@ -34,16 +34,73 @@ npm run dev
 
 Open http://localhost:5173
 
----
-
-## Production Build
+### Production Build
 
 ```bash
 npm run build      # Vite bundles the frontend into dist/
-npm start          # Express serves dist/ and the API proxy
+npm start          # Express serves dist/ and the API proxy on port 3001
 ```
 
 Open http://localhost:3001
+
+---
+
+## Docker
+
+The easiest way to run PiAware-3D on any machine (including a Raspberry Pi or a NAS).
+
+### Run with Docker Compose (recommended)
+
+```bash
+docker compose up -d
+```
+
+Open **http://localhost:3001**. The container restarts automatically unless you stop it.
+
+To stop:
+
+```bash
+docker compose down
+```
+
+### Run with Docker directly
+
+```bash
+# Build the image
+docker build -t piaware-3d .
+
+# Run (replace 3001 with any host port you prefer)
+docker run -d -p 3001:3001 --name piaware-3d piaware-3d
+```
+
+### Customising the port
+
+Edit `docker-compose.yml` and change the left side of the port mapping:
+
+```yaml
+ports:
+  - "8888:3001"   # now accessible at http://localhost:8888
+```
+
+Or pass it at runtime:
+
+```bash
+docker run -d -p 8888:3001 piaware-3d
+```
+
+### Running on a Raspberry Pi
+
+The image is based on `node:20-alpine` and builds for the host platform, so it works on any Pi that supports Docker (Pi 3B+ or newer with a 64-bit OS).
+
+```bash
+# On the Pi
+git clone <repo-url> piaware-3d && cd piaware-3d
+docker compose up -d
+```
+
+Set your PiAware URL to `http://localhost:8080` in Settings (since PiAware is on the same machine).
+
+Access the app from your laptop at `http://<pi-ip>:3001`.
 
 ---
 
@@ -61,23 +118,6 @@ A free Cesium Ion token gives you:
 5. Click **Save & Apply** — the page reloads with the new imagery
 
 Without a token the globe still works with default OpenStreetMap imagery and no terrain.
-
----
-
-## Running on PiAware Itself
-
-If you want to run overLI on the same Raspberry Pi as PiAware:
-
-```bash
-# On the Pi
-npm install
-npm run build
-npm start
-```
-
-Set your PiAware URL to `http://localhost:8080` in Settings.
-
-Then access the app from another machine at `http://<pi-ip>:3001`.
 
 ---
 

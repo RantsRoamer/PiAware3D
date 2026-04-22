@@ -113,7 +113,7 @@ async function main() {
       setConnectionStatus('connected');
     },
     (err) => {
-      console.warn('[overLI] Poll error:', err.message);
+      console.warn('[PiAware-3D] Poll error:', err.message);
       setConnectionStatus('disconnected');
     },
     POLL_MS

@@ -1,0 +1,11 @@
+services:
+  piaware-3d:
+    build: .
+    image: piaware-3d:latest
+    container_name: piaware-3d
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    restart: unless-stopped

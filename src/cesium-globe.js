@@ -42,7 +42,7 @@ export async function initGlobe(containerId, cesiumToken) {
   viewer.scene.globe.atmosphereSaturationShift = 0.1;
   viewer.scene.globe.atmosphereBrightnessShift = 0.1;
 
-  // Start over Long Island, NY (the "overLI" home view)
+  // Start over Long Island, NY
   viewer.camera.setView({
     destination: Cartesian3.fromDegrees(-73.5, 40.8, 2_000_000)
   });

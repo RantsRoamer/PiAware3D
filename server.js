@@ -40,5 +40,5 @@ if (isProduction) {
 
 app.listen(PORT, () => {
   const mode = isProduction ? 'production' : 'development (API proxy only)';
-  console.log(`overLI server running on http://localhost:${PORT} [${mode}]`);
+  console.log(`PiAware-3D server running on http://localhost:${PORT} [${mode}]`);
 });
