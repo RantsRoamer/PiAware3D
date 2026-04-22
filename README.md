@@ -23,7 +23,7 @@ Open **http://localhost:5173** in your browser. Click **⚙ Settings** and enter
 
 ```bash
 # 1. Clone or download this project
-git clone <repo-url> piaware-3d && cd piaware-3d
+git clone https://github.com/RantsRoamer/PiAware3D.git piaware-3d && cd piaware-3d
 
 # 2. Install dependencies
 npm install
@@ -94,7 +94,7 @@ The image is based on `node:20-alpine` and builds for the host platform, so it w
 
 ```bash
 # On the Pi
-git clone <repo-url> piaware-3d && cd piaware-3d
+git clone https://github.com/RantsRoamer/PiAware3D.git piaware-3d && cd piaware-3d
 docker compose up -d
 ```
 
