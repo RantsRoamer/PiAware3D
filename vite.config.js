@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite';
+import cesium from 'vite-plugin-cesium';
 
 export default defineConfig({
-  plugins: [],
+  plugins: [cesium()],
   server: {
     port: 5173,
     proxy: {
