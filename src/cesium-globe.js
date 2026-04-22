@@ -42,9 +42,21 @@ export async function initGlobe(containerId, cesiumToken) {
   viewer.scene.globe.atmosphereSaturationShift = 0.1;
   viewer.scene.globe.atmosphereBrightnessShift = 0.1;
 
-  // Start over Long Island, NY
+  // Allow camera to go below terrain (underground) so users can tilt up and look
+  // at aircraft from below, and zoom all the way in to individual planes.
+  const ctrl = viewer.scene.screenSpaceCameraController;
+  ctrl.enableCollisionDetection = false;
+  ctrl.minimumZoomDistance = 100;
+
+  // Start zoomed into the PiAware coverage area over Long Island with a slight
+  // downward pitch so depth is visible — not straight-down top view.
   viewer.camera.setView({
-    destination: Cartesian3.fromDegrees(-73.5, 40.8, 2_000_000)
+    destination: Cartesian3.fromDegrees(-73.2, 40.8, 350_000),
+    orientation: {
+      heading: CesiumMath.toRadians(0),
+      pitch:   CesiumMath.toRadians(-55),
+      roll:    0
+    }
   });
 
   return viewer;
