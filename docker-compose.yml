@@ -4,8 +4,8 @@ services:
     image: piaware-3d:latest
     container_name: piaware-3d
     ports:
-      - "3001:3001"
+      - "9898:9898"
     environment:
       - NODE_ENV=production
-      - PORT=3001
+      - PORT=9898
     restart: unless-stopped

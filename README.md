@@ -38,10 +38,10 @@ Open http://localhost:5173
 
 ```bash
 npm run build      # Vite bundles the frontend into dist/
-npm start          # Express serves dist/ and the API proxy on port 3001
+npm start          # Express serves dist/ and the API proxy on port 9898
 ```
 
-Open http://localhost:3001
+Open http://localhost:9898
 
 ---
 
@@ -55,7 +55,7 @@ The easiest way to run PiAware-3D on any machine (including a Raspberry Pi or a 
 docker compose up -d
 ```
 
-Open **http://localhost:3001**. The container restarts automatically unless you stop it.
+Open **http://localhost:9898**. The container restarts automatically unless you stop it.
 
 To stop:
 
@@ -69,8 +69,8 @@ docker compose down
 # Build the image
 docker build -t piaware-3d .
 
-# Run (replace 3001 with any host port you prefer)
-docker run -d -p 3001:3001 --name piaware-3d piaware-3d
+# Run (replace 9898 with any host port you prefer)
+docker run -d -p 9898:9898 --name piaware-3d piaware-3d
 ```
 
 ### Customising the port
@@ -79,13 +79,13 @@ Edit `docker-compose.yml` and change the left side of the port mapping:
 
 ```yaml
 ports:
-  - "8888:3001"   # now accessible at http://localhost:8888
+  - "8888:9898"   # now accessible at http://localhost:8888
 ```
 
 Or pass it at runtime:
 
 ```bash
-docker run -d -p 8888:3001 piaware-3d
+docker run -d -p 8888:9898 piaware-3d
 ```
 
 ### Running on a Raspberry Pi
@@ -100,7 +100,7 @@ docker compose up -d
 
 Set your PiAware URL to `http://localhost:8080` in Settings (since PiAware is on the same machine).
 
-Access the app from your laptop at `http://<pi-ip>:3001`.
+Access the app from your laptop at `http://<pi-ip>:9898`.
 
 ---
 

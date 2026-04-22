@@ -4,7 +4,7 @@ import path from 'path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 9898;
 const isProduction = process.env.NODE_ENV === 'production';
 
 // In production, serve the Vite-built frontend
