@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PiAware 3D Live Map – overLI</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+  <!-- Cesium mounts here — takes full viewport -->
+  <div id="cesium-container"></div>
+
+  <!-- Top bar -->
+  <div id="top-bar">
+    <div id="top-bar-left">
+      <span id="app-title">✈ PiAware 3D Live Map</span>
+    </div>
+    <div id="top-bar-center">
+      <span id="aircraft-count">0 aircraft</span>
+      <span id="connection-status" class="status-disconnected">● Disconnected</span>
+    </div>
+    <div id="top-bar-right">
+      <button id="legend-btn" class="icon-btn" title="Toggle altitude legend">Legend</button>
+      <button id="settings-btn" class="icon-btn" title="PiAware connection settings">⚙ Settings</button>
+    </div>
+  </div>
+
+  <!-- Bottom control bar -->
+  <div id="controls-bar">
+    <button id="reset-camera-btn" title="Reset globe view">🌍 Reset View</button>
+    <button id="follow-btn" title="Follow selected aircraft" disabled>📍 Follow</button>
+    <button id="trails-btn" title="Toggle position trails">〰 Trails: OFF</button>
+  </div>
+
+  <!-- Altitude legend -->
+  <div id="legend" class="panel hidden">
+    <h4>Altitude</h4>
+    <div class="legend-item"><span class="swatch" style="background:#00ff88"></span>Ground – 5,000 ft</div>
+    <div class="legend-item"><span class="swatch" style="background:#ffff00"></span>5,000 – 15,000 ft</div>
+    <div class="legend-item"><span class="swatch" style="background:#ff8800"></span>15,000 – 25,000 ft</div>
+    <div class="legend-item"><span class="swatch" style="background:#ff4444"></span>25,000 – 35,000 ft</div>
+    <div class="legend-item"><span class="swatch" style="background:#ff00ff"></span>35,000+ ft</div>
+  </div>
+
+  <!-- Aircraft info popup -->
+  <div id="aircraft-popup" class="panel hidden">
+    <div id="popup-header">
+      <div>
+        <span id="popup-callsign" class="popup-callsign">-</span>
+        <span id="popup-type" class="popup-type-badge"></span>
+      </div>
+      <button id="popup-close" class="icon-btn">✕</button>
+    </div>
+    <div id="popup-body">
+      <div class="popup-row"><span class="popup-label">ICAO</span><span id="popup-hex">-</span></div>
+      <div class="popup-row"><span class="popup-label">Altitude</span><span id="popup-altitude">-</span></div>
+      <div class="popup-row"><span class="popup-label">Speed</span><span id="popup-speed">-</span></div>
+      <div class="popup-row"><span class="popup-label">Heading</span><span id="popup-track">-</span></div>
+      <div class="popup-row"><span class="popup-label">Vert. Rate</span><span id="popup-vrate">-</span></div>
+      <div class="popup-row"><span class="popup-label">Squawk</span><span id="popup-squawk">-</span></div>
+      <div class="popup-row"><span class="popup-label">Last Seen</span><span id="popup-seen">-</span></div>
+    </div>
+  </div>
+
+  <!-- Settings modal -->
+  <div id="settings-overlay" class="modal-overlay hidden">
+    <div id="settings-modal" class="modal">
+      <h2>⚙ Settings</h2>
+      <div class="form-group">
+        <label for="piaware-url">PiAware / dump1090 URL</label>
+        <input type="text" id="piaware-url" placeholder="http://piaware.local:8080" autocomplete="off" />
+        <small>E.g. http://192.168.1.50:8080 — the machine running PiAware</small>
+      </div>
+      <div class="form-group">
+        <label for="cesium-token">Cesium Ion Token <em>(optional)</em></label>
+        <input type="text" id="cesium-token" placeholder="Paste your free Cesium Ion access token" autocomplete="off" />
+        <small>Get a free token at <strong>cesium.com/ion</strong> for HD imagery + terrain</small>
+      </div>
+      <div class="form-actions">
+        <button id="settings-cancel" class="btn-secondary">Cancel</button>
+        <button id="settings-save" class="btn-primary">Save &amp; Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Byline -->
+  <div id="byline">by John F. Gonzales</div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
