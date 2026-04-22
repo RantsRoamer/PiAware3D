@@ -29,8 +29,15 @@ async function main() {
   const trailManager    = createTrailManager(viewer);
   const aircraftManager = createAircraftManager(viewer, createAircraftEntity, updateAircraftEntity);
 
-  // Remove stale aircraft every 5 seconds
-  setInterval(() => aircraftManager.removeStale(STALE_MS), 5_000);
+  // Remove stale aircraft every 5 seconds — also remove their trail entities.
+  setInterval(() => {
+    const tracked = aircraftManager.getTracked();
+    const now = Date.now();
+    for (const [hex, { lastSeen }] of tracked) {
+      if (now - lastSeen > STALE_MS) trailManager.removeTrail(hex);
+    }
+    aircraftManager.removeStale(STALE_MS);
+  }, 5_000);
 
   // Track the selected aircraft for popup refresh and follow
   let selectedHex = null;
@@ -88,9 +95,12 @@ async function main() {
     (aircraft) => {
       aircraftManager.update(aircraft);
 
-      // Add trail points for all positioned aircraft
+      // Add trail points only for aircraft within the 200-cap (tracked by manager).
+      const tracked = aircraftManager.getTracked();
       for (const ac of aircraft) {
-        if (ac.lat != null && ac.lon != null) trailManager.addPoint(ac);
+        if (ac.lat != null && ac.lon != null && tracked.has(ac.hex)) {
+          trailManager.addPoint(ac);
+        }
       }
 
       // Keep popup data fresh for the selected aircraft

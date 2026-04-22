@@ -18,6 +18,12 @@ const AIRPLANE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24
 </svg>`;
 const AIRPLANE_ICON = `data:image/svg+xml,${encodeURIComponent(AIRPLANE_SVG)}`;
 
+// PiAware emits the string "ground" for alt_baro when aircraft are on the surface.
+// Coerce to 0 so feetToMeters and altitudeColor receive a number.
+function numericAlt(alt) {
+  return typeof alt === 'number' ? alt : 0;
+}
+
 function cssColorToCesium(hex) {
   const h = hex.replace('#', '');
   return new Color(
@@ -29,15 +35,15 @@ function cssColorToCesium(hex) {
 }
 
 function position(aircraft) {
-  const altM = feetToMeters(aircraft.alt_baro ?? aircraft.alt_geom ?? 0);
-  return Cartesian3.fromDegrees(aircraft.lon, aircraft.lat, Math.max(altM, 10));
+  const altFeet = numericAlt(aircraft.alt_baro ?? aircraft.alt_geom ?? 0);
+  return Cartesian3.fromDegrees(aircraft.lon, aircraft.lat, Math.max(feetToMeters(altFeet), 10));
 }
 
 // Creates a new Cesium Entity for an aircraft record.
 // Stores raw aircraft data in entity._ac for popup retrieval.
 export function createAircraftEntity(_viewer, aircraft) {
-  const callsign = (aircraft.flight ?? aircraft.hex).trim();
-  const color    = cssColorToCesium(altitudeColor(aircraft.alt_baro ?? 0));
+  const callsign = (aircraft.flight?.trim() || aircraft.hex) ?? aircraft.hex;
+  const color    = cssColorToCesium(altitudeColor(numericAlt(aircraft.alt_baro ?? 0)));
   const rotation = headingToRotation(aircraft.track ?? 0);
 
   const entity = new Entity({
@@ -74,9 +80,9 @@ export function createAircraftEntity(_viewer, aircraft) {
 // Updates an existing entity with fresh aircraft data.
 export function updateAircraftEntity(entity, aircraft) {
   entity.position  = position(aircraft);
-  const color      = cssColorToCesium(altitudeColor(aircraft.alt_baro ?? 0));
+  const color      = cssColorToCesium(altitudeColor(numericAlt(aircraft.alt_baro ?? 0)));
   entity.billboard.rotation = headingToRotation(aircraft.track ?? 0);
   entity.billboard.color    = color;
-  entity.label.text         = (aircraft.flight ?? aircraft.hex).trim();
+  entity.label.text         = (aircraft.flight?.trim() || aircraft.hex) ?? aircraft.hex;
   entity._ac                = aircraft;
 }

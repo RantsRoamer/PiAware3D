@@ -17,8 +17,10 @@ export function createTrailManager(viewer) {
 
   function addPoint(aircraft) {
     if (!enabled || aircraft.lat == null || aircraft.lon == null) return;
-    const altM = feetToMeters(aircraft.alt_baro ?? aircraft.alt_geom ?? 0);
-    const pos  = Cartesian3.fromDegrees(aircraft.lon, aircraft.lat, Math.max(altM, 10));
+    // PiAware emits 'ground' string for surface aircraft — coerce to numeric 0.
+    const rawAlt = aircraft.alt_baro ?? aircraft.alt_geom ?? 0;
+    const altM   = feetToMeters(typeof rawAlt === 'number' ? rawAlt : 0);
+    const pos    = Cartesian3.fromDegrees(aircraft.lon, aircraft.lat, Math.max(altM, 10));
 
     if (!trails.has(aircraft.hex)) {
       const positions = [pos];
