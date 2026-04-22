@@ -5,6 +5,8 @@ import { createAircraftManager } from './aircraft-manager.js';
 import { createAircraftEntity, updateAircraftEntity } from './aircraft-entity.js';
 import { createTrailManager } from './trails.js';
 import { createPoller } from './poller.js';
+import { createAirspaceLayer } from './airspace-layer.js';
+import { NY_AREA_AIRPORTS } from './airports-data.js';
 import {
   updateAircraftCount,
   setConnectionStatus,
@@ -28,6 +30,15 @@ async function main() {
   // Systems
   const trailManager    = createTrailManager(viewer);
   const aircraftManager = createAircraftManager(viewer, createAircraftEntity, updateAircraftEntity);
+
+  // Airports and airspace layer
+  const airspaceLayer = createAirspaceLayer(viewer);
+  airspaceLayer.add(NY_AREA_AIRPORTS);
+  document.getElementById('airports-btn').addEventListener('click', (e) => {
+    const nowVisible = !airspaceLayer.isVisible();
+    airspaceLayer.setVisible(nowVisible);
+    e.target.textContent = `✈ Airports: ${nowVisible ? 'ON' : 'OFF'}`;
+  });
 
   // Remove stale aircraft every 5 seconds — also remove their trail entities.
   setInterval(() => {

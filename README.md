@@ -15,6 +15,8 @@ npm run dev
 
 Open **http://localhost:5173** in your browser. Click **⚙ Settings** and enter your PiAware device URL (e.g. `http://192.168.1.50:8080`).
 
+> **Two ports in dev mode:** `npm run dev` starts both servers simultaneously — Vite (frontend) on **:5173** and Express (API proxy) on **:9898**. You only ever open :5173 in the browser; it proxies `/api` calls to the Express backend automatically.
+
 ---
 
 ## Installation (Node.js)
@@ -38,10 +40,10 @@ Open http://localhost:5173
 
 ```bash
 npm run build      # Vite bundles the frontend into dist/
-npm start          # Express serves dist/ and the API proxy on port 9898
+npm start          # Express serves dist/ + API proxy on port 9898
 ```
 
-Open http://localhost:9898
+Open **http://localhost:9898** — in production a single Express server handles everything on one port.
 
 ---
 
@@ -156,10 +158,20 @@ orientation: Cesium.Transforms.headingPitchRollQuaternion(
 |---|---|
 | Click aircraft | Show info popup |
 | 📍 Follow | Lock camera to selected aircraft |
-| 🌍 Reset View | Return to Long Island home view |
+| 🌍 Reset View | Fly back to saved start position |
 | 〰 Trails | Toggle position history trails |
+| ✈ Airports | Toggle airport markers and airspace rings |
 | Legend | Show altitude color legend |
-| ⚙ Settings | Configure PiAware URL and Cesium token |
+| ⚙ Settings | Configure PiAware URL, Cesium token, and start view |
+
+### Camera controls
+
+| Input | Action |
+|---|---|
+| Left-click + drag | Pan |
+| Right-click + drag | Orbit / tilt |
+| Scroll wheel | Zoom |
+| Middle-click + drag | Pitch |
 
 ---
 
@@ -172,3 +184,15 @@ orientation: Cesium.Transforms.headingPitchRollQuaternion(
 | 🟠 Orange | 15,000 – 25,000 ft |
 | 🔴 Red | 25,000 – 35,000 ft |
 | 🟣 Magenta | 35,000+ ft |
+
+## Airports and Airspace
+
+The **✈ Airports** toggle shows 12 NY-area airports with 3D airspace cylinders color-coded by FAA class:
+
+| Color | Class | Airports shown |
+|---|---|---|
+| 🔵 Blue | Class B | KJFK, KLGA, KEWR |
+| 🟣 Purple | Class C | KISP, KHPN |
+| 🩵 Light blue | Class D | KFRG, KTEB, KFOK, KHTO, KBDR, KSWF, KCDW |
+
+Each cylinder shows the correct floor and ceiling altitude for that sector. Boundaries are **approximate** — for VFR navigation always use official FAA charts.
