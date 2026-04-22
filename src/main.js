@@ -14,7 +14,7 @@ import {
   initLegendToggle,
   initTrailsToggle
 } from './ui.js';
-import { ScreenSpaceEventType } from 'cesium';
+import { ScreenSpaceEventType, Cartographic, Math as CesiumMath, Cartesian3 } from 'cesium';
 
 const STALE_MS = 30_000;
 const POLL_MS  = 1_000;
@@ -23,7 +23,7 @@ async function main() {
   const settings = loadSettings();
 
   // Globe
-  const viewer = await initGlobe('cesium-container', settings.cesiumToken || null);
+  const viewer = await initGlobe('cesium-container', settings);
 
   // Systems
   const trailManager    = createTrailManager(viewer);
@@ -68,11 +68,23 @@ async function main() {
       viewer.trackedEntity ? '📍 Following' : '📍 Follow';
   });
 
-  // Reset camera to home view
+  // Reset camera to saved start view
   document.getElementById('reset-camera-btn').addEventListener('click', () => {
     viewer.trackedEntity = undefined;
     document.getElementById('follow-btn').textContent = '📍 Follow';
-    viewer.camera.flyHome(1.5);
+    viewer.camera.flyTo({
+      destination: Cartesian3.fromDegrees(
+        settings.startLon  ?? -73.2,
+        settings.startLat  ?? 40.8,
+        (settings.startAltKm ?? 350) * 1000
+      ),
+      orientation: {
+        heading: CesiumMath.toRadians(0),
+        pitch:   CesiumMath.toRadians(settings.startPitch ?? -55),
+        roll: 0
+      },
+      duration: 1.5
+    });
   });
 
   // Trails toggle
@@ -84,8 +96,19 @@ async function main() {
   // Popup close button
   initPopupCloseButton();
 
-  // Settings modal — reloads page so new Cesium token takes effect
-  initSettingsModal(settings, () => window.location.reload());
+  // Returns current camera position for the "Use Current View" button in settings.
+  const getCameraView = () => {
+    const carto = viewer.camera.positionCartographic;
+    return {
+      startLat:   parseFloat(CesiumMath.toDegrees(carto.latitude).toFixed(4)),
+      startLon:   parseFloat(CesiumMath.toDegrees(carto.longitude).toFixed(4)),
+      startAltKm: Math.round(carto.height / 1000),
+      startPitch: Math.round(CesiumMath.toDegrees(viewer.camera.pitch))
+    };
+  };
+
+  // Settings modal — reloads page so new Cesium token / start position takes effect
+  initSettingsModal(settings, getCameraView, () => window.location.reload());
 
   // Start polling
   setConnectionStatus('connecting');

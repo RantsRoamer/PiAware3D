@@ -200,6 +200,27 @@ button:disabled { opacity: 0.4; cursor: not-allowed; }
 .form-group input:focus { border-color: #4fc3f7; }
 .form-group small { display: block; color: #555; font-size: 11px; margin-top: 5px; }
 .form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+
+/* Start view coordinate inputs */
+.coord-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.coord-field { display: flex; flex-direction: column; gap: 3px; }
+.coord-label { font-size: 10px; color: #666; letter-spacing: 0.5px; }
+.coord-field input { padding: 7px 8px; font-size: 13px; }
+.btn-capture {
+  width: 100%;
+  margin-top: 4px;
+  background: rgba(79,195,247,0.10);
+  border-color: rgba(79,195,247,0.28);
+  color: #4fc3f7;
+  padding: 7px 12px;
+  font-size: 13px;
+}
+.btn-capture:hover { background: rgba(79,195,247,0.20); color: #81d4fa; }
 .btn-primary { background: #1565c0; border-color: #1976d2; color: #fff; }
 .btn-primary:hover { background: #1976d2; }
 .btn-secondary { background: transparent; }

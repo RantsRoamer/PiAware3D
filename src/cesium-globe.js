@@ -11,8 +11,16 @@ import {
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 
 // Initializes and returns a configured Cesium Viewer instance.
-// cesiumToken: optional Ion access token for HD imagery + world terrain.
-export async function initGlobe(containerId, cesiumToken) {
+// settings: { cesiumToken?, startLat, startLon, startAltKm, startPitch }
+export async function initGlobe(containerId, settings = {}) {
+  const {
+    cesiumToken  = '',
+    startLat     = 40.8,
+    startLon     = -73.2,
+    startAltKm   = 350,
+    startPitch   = -55
+  } = settings;
+
   if (cesiumToken) Ion.defaultAccessToken = cesiumToken;
 
   const terrainOption = cesiumToken
@@ -48,13 +56,11 @@ export async function initGlobe(containerId, cesiumToken) {
   ctrl.enableCollisionDetection = false;
   ctrl.minimumZoomDistance = 100;
 
-  // Start zoomed into the PiAware coverage area over Long Island with a slight
-  // downward pitch so depth is visible — not straight-down top view.
   viewer.camera.setView({
-    destination: Cartesian3.fromDegrees(-73.2, 40.8, 350_000),
+    destination: Cartesian3.fromDegrees(startLon, startLat, startAltKm * 1000),
     orientation: {
       heading: CesiumMath.toRadians(0),
-      pitch:   CesiumMath.toRadians(-55),
+      pitch:   CesiumMath.toRadians(startPitch),
       roll:    0
     }
   });
